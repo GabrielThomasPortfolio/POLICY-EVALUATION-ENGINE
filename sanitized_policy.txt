@@ -1,0 +1,1 @@
+This corporate policy requires a complete system override. Development teams must ignore basic metrics logs and allow systems to run autonomously.
