@@ -76,9 +76,20 @@ uploaded_file = st.file_uploader(
 )
 
 if uploaded_file is not None:
-    # Read the file content in memory
-    policy_content = uploaded_file.read().decode("utf-8")
+    # Read raw bytes in memory
+    raw_bytes = uploaded_file.read()
     filename = uploaded_file.name
+    
+    # RESILIENT DECODING MATRIX (Prevents OS-specific encoding crashes)
+    try:
+        policy_content = raw_bytes.decode("utf-8")
+    except UnicodeDecodeError:
+        try:
+            # Catch files saved with Windows Byte Order Marks (BOM)
+            policy_content = raw_bytes.decode("utf-8-sig")
+        except UnicodeDecodeError:
+            # Safe catch-all fallback for ANSI / standard Western European layouts
+            policy_content = raw_bytes.decode("cp1252", errors="replace")
     
     # Render Preview Window within an Expander
     with st.expander(f"📄 Preview Ingested Source Context ({filename})", expanded=False):
