@@ -3,11 +3,11 @@ import json
 import os
 from datetime import datetime
 
-# Import deterministic logic directly from your orchestration engine
+# Import deterministic logic directly from your updated orchestration engine
 from orchestrate import (
     load_rag_knowledge_base,
     local_multi_track_router,
-    simulate_secure_llm_call,
+    execute_secure_llm_call,
     verify_output_gate,
     generate_markdown_executive_summary
 )
@@ -99,11 +99,10 @@ if uploaded_file is not None:
     if st.button("🚀 Run Compliance Audit", type="primary"):
         
         # Verify if Knowledge Base File Exists before firing
-        # Verify if Knowledge Base File Exists before firing
         if not os.path.exists(kb_path):
             st.error(f"❌ Knowledge Base file not found at path: `{kb_path}`. Please verify deployment track parameters.")
         else:
-            with st.spinner("Executing Semantic Router, Simulating Model Isolation, and Evaluating Guards..."):
+            with st.spinner("Executing Semantic Router, Initiating Secure Engine Call, and Evaluating Guards..."):
                 
                 # --- ADD TAXONOMY TRANSLATION MATRIX HERE ---
                 track_translation_map = {
@@ -132,12 +131,15 @@ if uploaded_file is not None:
                         "untrusted_user_policy": policy_content
                     }
                     
-                    # Fire execution context
-                    raw_response = simulate_secure_llm_call(prompt_payload, control)
+                    # Fire execution context (Live API or Fallback logic)
+                    raw_response = execute_secure_llm_call(prompt_payload, control)
                     
-                    # Circuit Breaker Verification
-                    if verify_output_gate(raw_response):
-                        audit_findings.append(raw_response)
+                    # Circuit Breaker Verification with updated Pydantic target
+                    validated_object = verify_output_gate(raw_response)
+                    
+                    if validated_object:
+                        # Extract dictionary values safely out of our validated Pydantic layer
+                        audit_findings.append(validated_object.model_dump())
                     else:
                         security_anomalies_detected += 1
                 
