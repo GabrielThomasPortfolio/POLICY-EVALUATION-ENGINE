@@ -2,7 +2,7 @@
 
 ### *Enterprise-Grade Local RAG Pipeline & Advanced Application Security Boundary*
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://policy-evaluation-engine-gabrielthomas.streamlit.app/) •  
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://policy-evaluation-engine-gabrielthomas.streamlit.app/) • 
 [![Python 3.14+](https://img.shields.io/badge/python-3.14%2B-blue.svg)](https://www.python.org/) • 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
