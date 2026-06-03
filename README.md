@@ -1,4 +1,4 @@
-# 🛡️ AI Policy Evaluation & Compliance Engine
+# AI Policy Evaluation & Compliance Engine
 
 ### *Enterprise-Grade Local RAG Pipeline & Advanced Application Security Boundary*
 
@@ -6,11 +6,11 @@
 [![Python 3.14+](https://img.shields.io/badge/python-3.14%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> 💡 **Live Portfolio Showcase:** [🚀 Click here to launch the live interactive Web Dashboard](https://policy-evaluation-engine-gabrielthomas.streamlit.app/)
+>  **Live Portfolio Showcase:** [🚀 Click here to launch the live interactive Web Dashboard](https://policy-evaluation-engine-gabrielthomas.streamlit.app/)
 
 ---
 
-## 👔 Executive Summary & Value Proposition (For Recruiters & Hiring Managers)
+## Executive Summary & Value Proposition (For Recruiters & Hiring Managers)
 
 In the rapidly evolving regulatory landscape, enterprises struggle with **fragmented governance alignment**. Reviewing corporate drafts, security charters, and IT protocols against disparate global frameworks like **ISO/IEC 42001 (AI Management Systems)**, **ISO/IEC 27001 (ISMS)**, and the **NIST AI Risk Management Framework (AI RMF 1.0)** is traditionally slow, manual, error-prone, and prohibitively expensive.
 
@@ -23,5 +23,33 @@ This project delivers an automated **AI Governance & Policy Evaluation Engine** 
 
 ---
 
-## 🔍 Deep-Dive System Architecture
+## Deep-Dive System Architecture
 For a comprehensive breakdown of systemic controls, intentional design limits, and framework compliance mapping (ISO 42001/NIST AI RMF), review our full [System Card & Enclosure Specifications](about.txt).
+
+---
+
+Local Installation & Reproducibility Guide
+Validate this implementation locally on your machine by setting up a clean, isolated environment:
+
+1. Clone the Project & Navigate Inside
+Bash
+git clone [https://github.com/YOUR_GITHUB_USERNAME/POLICY-EVALUATION-ENGINE.git](https://github.com/YOUR_GITHUB_USERNAME/POLICY-EVALUATION-ENGINE.git)
+cd POLICY-EVALUATION-ENGINE
+2. Provision and Activate a Virtual Environment
+Bash
+# Create the environment sandbox
+python -m venv venv
+
+# Activate on macOS/Linux:
+source venv/bin/activate
+
+# Activate on Windows PowerShell:
+Set-ExecutionPolicy RemoteSigned -Scope Process
+.\venv\Scripts\Activate.ps1
+3. Install Dependencies
+Bash
+pip install -r requirements.txt
+4. Launch the Local Web Dashboard
+Bash
+python -m streamlit run app.py
+Open your browser to http://localhost:8501 to view the interactive framework interface.
