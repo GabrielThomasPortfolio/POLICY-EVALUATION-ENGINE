@@ -100,6 +100,37 @@ The system integrates five distinct layers of technical and security controls:
     Markdown Executive Summary. The executive layer translates compliance metrics 
     into visual ASCII dashboards, progress indicators, and actionable remediation logs.
 
+6. KNOWN SYSTEM LIMITATIONS & ARCHITECTURAL EVOLUTION
+--------------------------------------------------------------------------------
+To facilitate friction-free, local testing and cost-free public portfolio 
+review, this implementation utilizes a deterministic test harness 
+(`simulate_secure_llm_call`) as a simulated execution environment.
+
+[A] The Local Test Harness Boundary
+    The current local simulation defaults to an optimistic alignment posture 
+    unless explicit tracking keywords (e.g., infrastructural log loops) are 
+    violated. Consequently, scanning comprehensive framework policies (such as 
+    traditional enterprise IT charters) may yield false positives across 
+    highly specialized tracks like AI_Governance, as the mock parser relies 
+    on predictable string matching rather than contextual linguistic comprehension.
+
+[B] Production Migration Path (The Cognitive Upgrade)
+    In a live enterprise environment, the system replaces the mock simulation 
+    with a live API calling structure (e.g., Google Gemini or OpenAI) using 
+    Strict Structured Outputs (JSON Schema Enforcements). 
+    
+    The operational workflow scales as follows:
+    1. The Local Router dynamically isolates the policy payload and fetches 
+       the precise regulatory compliance JSONL rows.
+    2. The live LLM digests the context-enclosed user policy inside the secure 
+       XML wrappers.
+    3. The model programmatically cross-references the text against the 
+       actual `evaluation_checklist` arrays, logging genuine, context-aware 
+       gap findings.
+    4. The model returns its final response structured exactly to the required 
+       schema keys, ensuring it either sails through the verification circuit 
+       breaker or triggers an anomaly event.
+
 ================================================================================
 DEVELOPMENT METADATA
 --------------------------------------------------------------------------------
