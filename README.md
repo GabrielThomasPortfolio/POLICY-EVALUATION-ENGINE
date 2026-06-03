@@ -1,20 +1,34 @@
-# 🛡️ AI Policy Evaluation & Compliance Engine
+# AI Policy Evaluation & Compliance Engine
 
 ### *Enterprise-Grade Local RAG Pipeline & Advanced Application Security Boundary*
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://policy-evaluation-engine-gabrielthomas.streamlit.app/)
-[![Python 3.14+](https://img.shields.io/badge/python-3.14%2B-blue.svg)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-App-red?logo=streamlit)](https://policy-evaluation-engine-gabrielthomas.streamlit.app/) •
+[![Python 3.14+](https://img.shields.io/badge/python-3.14%2B-blue.svg)](https://www.python.org/) •
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> 💡 **Live Portfolio Showcase:** [🚀 Click here to launch the live interactive Web Dashboard](https://policy-evaluation-engine-gabrielthomas.streamlit.app/)
+Copyright (c) 2026 Gabriel Thomas
+
+Permission is hereby granted…
+
+Attribution is required for any reuse, modification, or redistribution.
+
+>  **Live Portfolio Showcase:** [🚀 Click here to launch the live interactive Web Dashboard](https://policy-evaluation-engine-gabrielthomas.streamlit.app/)
 
 ---
 
-## 👔 Executive Summary & Value Proposition (For Recruiters & Hiring Managers)
+## Executive Summary & Value Proposition  
+### *(For Recruiters, Hiring Managers, and AI Governance Leaders)*
 
-In the rapidly evolving regulatory landscape, enterprises struggle with **fragmented governance alignment**. Reviewing corporate drafts, security charters, and IT protocols against disparate global frameworks like **ISO/IEC 42001 (AI Management Systems)**, **ISO/IEC 27001 (ISMS)**, and the **NIST AI Risk Management Framework (AI RMF 1.0)** is traditionally slow, manual, error-prone, and prohibitively expensive.
+Enterprises are racing to deploy AI — but governing it remains fragmented, manual, and inconsistent. Reviewing corporate drafts, security charters, and IT protocols against global frameworks like:
 
-This project delivers an automated **AI Governance & Policy Evaluation Engine** that performs instant pre-audit gap analysis with absolute structural predictability. 
+- **ISO/IEC 42001** (AI Management Systems)  
+- **ISO/IEC 27001** (Information Security Management Systems)  
+- **NIST AI RMF 1.0**  
+- **NIST SP 800-53 Rev5**
+
+…is traditionally slow, error-prone, and prohibitively expensive.
+
+This project delivers a **deterministic, local-first AI Governance & Policy Evaluation Engine** that performs **instant pre-audit gap analysis** with **zero data leakage** and **full structural predictability**.
 
 ### Key High-Value Business Pillars:
 * **Zero Data-Leak Infrastructure:** Built as a local-first architecture, the engine eliminates third-party data collection risks, ensuring that sensitive corporate intellectual property never crosses untrusted network boundaries.
@@ -23,5 +37,37 @@ This project delivers an automated **AI Governance & Policy Evaluation Engine** 
 
 ---
 
-## 🔍 Deep-Dive System Architecture
+## Deep-Dive System Architecture
 For a comprehensive breakdown of systemic controls, intentional design limits, and framework compliance mapping (ISO 42001/NIST AI RMF), review our full [System Card & Enclosure Specifications](about.txt).
+
+---
+
+## Local Installation & Reproducibility Guide
+Validate this implementation locally on your machine by setting up a clean, isolated environment:
+
+1. Clone the Project & Navigate Inside
+git clone [https://github.com/YOUR_GITHUB_USERNAME/POLICY-EVALUATION-ENGINE.git](https://github.com/YOUR_GITHUB_USERNAME/POLICY-EVALUATION-ENGINE.git)
+cd POLICY-EVALUATION-ENGINE
+
+2. Provision and Activate a Virtual Environment
+# Create the environment sandbox
+python -m venv venv
+
+# Activate on macOS/Linux:
+source venv/bin/activate
+
+# Activate on Windows PowerShell:
+Set-ExecutionPolicy RemoteSigned -Scope Process
+.\venv\Scripts\Activate.ps1
+
+3. Install Dependencies
+pip install -r requirements.txt
+
+4. Launch the Local Web Dashboard
+python -m streamlit run app.py
+Open your browser to http://localhost:8501 to view the interactive framework interface.
+
+Provenance & Authorship  
+This project, including its architecture, system card, RAG mappings, and deterministic evaluation pipeline, was designed and implemented by Gabriel Thomas as part of a professional AI governance portfolio.
+
+If you reference or build upon this work, please provide attribution.
