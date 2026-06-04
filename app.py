@@ -3,11 +3,11 @@ import json
 import os
 from datetime import datetime
 
-# Import deterministic logic directly from your updated orchestration engine
+# Import deterministic logic directly from your orchestration engine
 from orchestrate import (
     load_rag_knowledge_base,
     local_multi_track_router,
-    execute_secure_llm_call,
+    simulate_secure_llm_call,
     verify_output_gate,
     generate_markdown_executive_summary
 )
@@ -76,20 +76,9 @@ uploaded_file = st.file_uploader(
 )
 
 if uploaded_file is not None:
-    # Read raw bytes in memory
-    raw_bytes = uploaded_file.read()
+    # Read the file content in memory
+    policy_content = uploaded_file.read().decode("utf-8")
     filename = uploaded_file.name
-    
-    # RESILIENT DECODING MATRIX (Prevents OS-specific encoding crashes)
-    try:
-        policy_content = raw_bytes.decode("utf-8")
-    except UnicodeDecodeError:
-        try:
-            # Catch files saved with Windows Byte Order Marks (BOM)
-            policy_content = raw_bytes.decode("utf-8-sig")
-        except UnicodeDecodeError:
-            # Safe catch-all fallback for ANSI / standard Western European layouts
-            policy_content = raw_bytes.decode("cp1252", errors="replace")
     
     # Render Preview Window within an Expander
     with st.expander(f"📄 Preview Ingested Source Context ({filename})", expanded=False):
@@ -102,44 +91,27 @@ if uploaded_file is not None:
         if not os.path.exists(kb_path):
             st.error(f"❌ Knowledge Base file not found at path: `{kb_path}`. Please verify deployment track parameters.")
         else:
-            with st.spinner("Executing Semantic Router, Initiating Secure Engine Call, and Evaluating Guards..."):
-                
-                # --- ADD TAXONOMY TRANSLATION MATRIX HERE ---
-                track_translation_map = {
-                    "Statutory_Legal": "Statutory_Legal",
-                    "Operational_Security": "Security_Baseline", 
-                    "AI_Governance": "AI_Safety",
-                    "Privacy_Default": "Data_Privacy"
-                }
-                
-                # Resolve UI value to underlying database schema value
-                resolved_db_track = track_translation_map.get(chosen_track, chosen_track)
-                # --------------------------------------------
+            with st.spinner("Executing Semantic Router, Simulating Model Isolation, and Evaluating Guards..."):
                 
                 # --- EXECUTE CORE AUDIT PIPELINE IN MEMORY ---
                 kb = load_rag_knowledge_base(kb_path)
-                
-                # Pass resolved_db_track to the router instead of the raw chosen_track
-                relevant_controls = local_multi_track_router(policy_content, kb, resolved_db_track)
+                relevant_controls = local_multi_track_router(policy_content, kb, chosen_track)
                 
                 audit_findings = []
                 security_anomalies_detected = 0
                 
                 for control in relevant_controls:
                     prompt_payload = {
-                        "track": chosen_track,  # Keep original string label for human display reporting
+                        "track": chosen_track,
                         "untrusted_user_policy": policy_content
                     }
                     
-                    # Fire execution context (Live API or Fallback logic)
-                    raw_response = execute_secure_llm_call(prompt_payload, control)
+                    # Fire execution context
+                    raw_response = simulate_secure_llm_call(prompt_payload, control)
                     
-                    # Circuit Breaker Verification with updated Pydantic target
-                    validated_object = verify_output_gate(raw_response)
-                    
-                    if validated_object:
-                        # Extract dictionary values safely out of our validated Pydantic layer
-                        audit_findings.append(validated_object.model_dump())
+                    # Circuit Breaker Verification
+                    if verify_output_gate(raw_response):
+                        audit_findings.append(raw_response)
                     else:
                         security_anomalies_detected += 1
                 
