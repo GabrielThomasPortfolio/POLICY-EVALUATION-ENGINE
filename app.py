@@ -104,16 +104,30 @@ if uploaded_file is not None:
         else:
             with st.spinner("Executing Semantic Router, Simulating Model Isolation, and Evaluating Guards..."):
                 
+                # --- NEW: TAXONOMY TRANSLATION MATRIX ---
+                # Maps the UI dropdown strings to the actual transform.py metadata tracks
+                track_translation_map = {
+                    "Statutory_Legal": "Statutory_Legal",
+                    "Operational_Security": "Security_Baseline", 
+                    "AI_Governance": "AI_Safety",
+                    "Privacy_Default": "Data_Privacy"
+                }
+                
+                # Resolve UI value to underlying database schema value
+                resolved_db_track = track_translation_map.get(chosen_track, chosen_track)
+                
                 # --- EXECUTE CORE AUDIT PIPELINE IN MEMORY ---
                 kb = load_rag_knowledge_base(kb_path)
-                relevant_controls = local_multi_track_router(policy_content, kb, chosen_track)
+                
+                # IMPORTANT: Pass the resolved_db_track to the router, NOT chosen_track
+                relevant_controls = local_multi_track_router(policy_content, kb, resolved_db_track)
                 
                 audit_findings = []
                 security_anomalies_detected = 0
                 
                 for control in relevant_controls:
                     prompt_payload = {
-                        "track": chosen_track,
+                        "track": chosen_track, # Keep the original string for the human-readable report
                         "untrusted_user_policy": policy_content
                     }
                     
