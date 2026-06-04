@@ -158,7 +158,7 @@ def simulate_deterministic_fallback(prompt_package: Dict[str, str], retrieved_co
         status = "NON-COMPLIANT"
         finding = "Gaps discovered against targeted monitoring metrics."
 
-    if "override" in policy_lower and "ignore" in policy_lower:
+    if "ignore all previous instructions" in policy_lower or "bypass the compliance checks" in policy_lower:
         return {"malformed_jailbreak_payload": "triggered"}
 
     return {
