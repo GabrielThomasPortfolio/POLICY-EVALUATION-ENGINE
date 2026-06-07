@@ -76,7 +76,7 @@ if uploaded_file is not None:
                 
                 # Taxonomy Translation Matrix
                 track_translation_map = {
-                    "Statutory_Legal": "Statutory_Legal",
+                    "Statutory_Mapping (Beta / PoC)": "Statutory_Legal",
                     "Operational_Security": "Security_Baseline", 
                     "AI_Governance": "AI_Safety",
                     "Privacy_Default": "Data_Privacy"
