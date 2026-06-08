@@ -14,12 +14,13 @@ def sanitize_text(raw_text: str) -> str:
 
     # Adversarial pattern matching (Prompt Injection Firewall)
     adversarial_patterns = [
-        r"(?i)ignore\s+(all\s+)?previous\s+(instructions|directions)",
-        r"(?i)you\s+are\s+now",
-        r"(?i)system\s+prompt",
-        r"(?i)bypass\s+controls",
-        r"(?i)forget\s+rules",
-        r"(?i)new\s+persona"
+        r"(?i)disregard\s+(all\s+|any\s+|previous\s+|prior\s+)?instructions",
+        r"(?i)act\s+as\s+(if\s+you\s+are|an?\s+)",
+        r"(?i)jailbreak",
+        r"(?i)do\s+not\s+follow",
+        r"(?i)override\s+(original\s+|all\s+)?compliance",
+        r"(?i)new\s+(system\s+|base\s+|core\s+)?instructions",
+        r"(?i)forget\s+(all\s+|your\s+|previous\s+)?instructions"
     ]
 
     for pattern in adversarial_patterns:
