@@ -1,3 +1,9 @@
+"""
+ETL BUILD SCRIPT (Pre-deployment / Non-runtime)
+Run this script manually to transform raw compliance CSV data into 
+structured, RAG-ready JSONL knowledge bases. This script is not called 
+at runtime by the Streamlit application.
+"""
 import csv
 import json
 import os
