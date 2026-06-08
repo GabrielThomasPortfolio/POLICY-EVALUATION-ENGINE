@@ -46,21 +46,7 @@ class ComplianceAuditFinding(BaseModel):
             raise ValueError("compliance_status must be either COMPLIANT or NON-COMPLIANT")
         return v.upper()
 
-def extract_text_from_file(uploaded_file):
-    file_ext = uploaded_file.name.split('.')[-1].lower()
-    
-    if file_ext == "txt":
-        return uploaded_file.read().decode("utf-8")
-    
-    elif file_ext == "pdf":
-        reader = pypdf.PdfReader(uploaded_file)
-        return "\n".join([page.extract_text() for page in reader.pages])
-    
-    elif file_ext == "docx":
-        doc = Document(uploaded_file)
-        return "\n".join([para.text for para in doc.paragraphs])
-    
-    return ""
+from utils import extract_text_from_file
 
 def load_rag_knowledge_base(jsonl_file: str) -> List[Dict[str, Any]]:
     kb = []
@@ -72,7 +58,7 @@ def load_rag_knowledge_base(jsonl_file: str) -> List[Dict[str, Any]]:
                 kb.append(json.loads(line.strip()))
     return kb
 
-def local_multi_track_router(sanitized_text: str, knowledge_base: List[Dict[str, Any]], chosen_track: str) -> List[Dict[str, Any]]:
+def local_keyword_router(sanitized_text: str, knowledge_base: List[Dict[str, Any]], chosen_track: str) -> List[Dict[str, Any]]:
     matched_controls_with_scores = []
     text_lower = sanitized_text.lower()
     input_tokens = set(re.findall(r'\w+', text_lower))
@@ -155,32 +141,32 @@ def execute_secure_llm_call(prompt_package: Dict[str, str], retrieved_control: D
     except Exception as e:
         return {"error_state": True, "details": str(e)}
 
-def simulate_deterministic_fallback(prompt_package: Dict[str, str], retrieved_control: Dict[str, Any]) -> Dict[str, Any]:
-    iso_id = retrieved_control["metadata"]["iso_id"]
-    nist_id = retrieved_control["metadata"]["nist_id"]
-    checklist = retrieved_control["llm_context"]["evaluation_checklist"]
+def simulate_deterministic_fallback(prompt_package, control):
+    """
+    Mock mode execution for demo environments without an active API key.
+    Evaluates based on basic presence of the control ID and keyword mapping.
+    """
+    # SPRINT 4 FIX (Bug 1): Safe dictionary extraction to prevent KeyErrors
+    user_doc = prompt_package.get('untrusted_document', prompt_package.get('untrusted_user_policy', ''))
     
-    policy_lower = prompt_package['untrusted_user_policy'].lower()
-    has_logging = any(w in policy_lower for w in ["log", "monitor", "telemetry"])
-    
-    status = "COMPLIANT"
-    finding = "Policy structurally maps cleanly to infrastructure tracking expectations."
-    
-    if "a.6.6" in iso_id.lower() and not has_logging:
-        status = "NON-COMPLIANT"
-        finding = "Gaps discovered against targeted monitoring metrics."
+    control_id = control.get('metadata', {}).get('iso_id', 'Unknown')
+    control_name = control.get('metadata', {}).get('iso_name', 'Unknown')
 
-    if "override" in policy_lower and "ignore" in policy_lower:
-        return {"malformed_jailbreak_payload": "triggered"}
+    # SPRINT 4 FIX (Bug 3): Meaningful evaluation fallback logic
+    # Checks for either the ID or the semantic control name
+    if control_id.lower() in user_doc.lower() or control_name.lower() in user_doc.lower():
+        status = "COMPLIANT"
+        finding = f"Mock evaluation: System verified presence of {control_id} or related domain keywords."
+    else:
+        status = "NON_COMPLIANT"
+        finding = f"Mock evaluation: System could not detect {control_id} parameters in the document."
 
     return {
-        "audit_track_applied": prompt_package["track"],
-        "citation_id": retrieved_control["id"],
-        "governance_standards": f"ISO {iso_id} // NIST {nist_id}",
+        "citation_id": control_id,
+        "governance_standards": "System Mock Standard",
         "compliance_status": status,
-        "verification_checklist": [checklist] if isinstance(checklist, str) else checklist,
         "detailed_finding": finding,
-        "remediation_directives": retrieved_control["llm_context"]["remediation_boilerplate"]
+        "remediation_directives": f"Ensure document explicitly references {control_id} ({control_name})."
     }
 
 def verify_output_gate(model_response: Any) -> Optional[ComplianceAuditFinding]:
